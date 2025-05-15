@@ -33,6 +33,7 @@ data/val/
 model/saved_model/*
 !model/saved_model/.gitkeep
 model/__pycache__/
+temporary/
 
 # エディタ関連
 .idea/

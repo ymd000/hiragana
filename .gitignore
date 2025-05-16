@@ -26,6 +26,7 @@ ENV/
 .env
 .venv
 env/
+myenv/
 
 # モデル・学習データ関連
 data/train/

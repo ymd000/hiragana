@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ひらがな手書き認識</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ひらがな手書き認識</h1>
+        <div class="drawing-area">
+            <canvas id="drawingCanvas" width="280" height="280"></canvas>
+            <div class="canvas-controls">
+                <button id="clearButton">クリア</button>
+                <button id="recognizeButton">認識</button>
+            </div>
+        </div>
+        <div class="result-area">
+            <h2>認識結果</h2>
+            <div id="result" class="result-display">ここに結果が表示されます</div>
+            <div id="topResults" class="top-results"></div>
+        </div>
+        <div class="footer">
+            <p>Powered by PyTorch + ONNX Runtime</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

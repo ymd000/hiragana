@@ -6,7 +6,7 @@ PyTorchで学習した手書きひらがな認識モデルをONNX形式に変換
 
 以下のURLでアプリケーションを試すことができます：
 
-[ひらがな手書き認識アプリケーション](https://あなたのGitHubユーザー名.github.io/hiragana/)
+[ひらがな手書き認識アプリケーション](https://ymd000.github.io/hiragana/)
 
 ## プロジェクトの構成
 

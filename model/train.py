@@ -8,7 +8,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import datetime
-from model import HiraganaNet
+from tqdm import tqdm
+from model.model import HiraganaNet
 
 # データセットクラス
 class HiraganaDataset(Dataset):
@@ -40,9 +41,11 @@ class HiraganaDataset(Dataset):
 
 # 学習用の前処理
 transform = transforms.Compose([
-    transforms.Resize((64, 64)),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5,), (0.5,))
+    transforms.CenterCrop(50),  # 画像の中心を64x64にトリミング
+    transforms.RandomRotation(degrees=10),  # 画像の回転
+    transforms.Resize((64, 64)),  # 画像のサイズを64x64に変更
+    transforms.ToTensor(),  # 画像をテンソルに変換
+    transforms.Normalize((0.5,), (0.5,))  # テンソルを正規化
 ])
 
 # データセットとローダーの準備
@@ -63,6 +66,7 @@ plt.rcParams['font.sans-serif'] = ['Yu Gothic',
                                    ]
 
 '''
+'''
 # データセットの最初の数個のデータを表示（デバッグ用）
 def show_samples(save_path=None):    
     plt.figure(figsize=(10, 4))
@@ -82,7 +86,6 @@ def show_samples(save_path=None):
 
 # サンプル画像を表示（デバッグ用）
 show_samples()
-'''
 
 # モデル、損失関数、オプティマイザの設定
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -100,12 +103,18 @@ val_accuracies = []
 
 # 学習ループ
 num_epochs = 20  # エポック数
-for epoch in range(num_epochs):
+for epoch in tqdm(range(num_epochs),
+                  desc='Training',
+                  leave=False
+                  ):
     # 訓練モード
     model.train()
     running_loss = 0.0
     
-    for inputs, labels in train_loader:
+    for inputs, labels in tqdm(train_loader,
+                               desc=f'Training Epoch {epoch+1}/{num_epochs}',
+                               leave=False
+                               ):
         inputs, labels = inputs.to(device), labels.to(device)
         
         optimizer.zero_grad()
@@ -124,7 +133,10 @@ for epoch in range(num_epochs):
     correct = 0
     total = 0
     with torch.no_grad():
-        for inputs, labels in val_loader:
+        for inputs, labels in tqdm(val_loader,
+                                   desc=f'Validation Epoch {epoch+1}/{num_epochs}',
+                                   leave=False
+                                   ):
             inputs, labels = inputs.to(device), labels.to(device)
             outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)

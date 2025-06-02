@@ -1,7 +1,7 @@
 import os
 import torch
 import json
-from improved_model import ImprovedHiraganaNet
+from model.improved_model import ImprovedHiraganaNet
 
 def export_model():
     # クラス名の読み込み

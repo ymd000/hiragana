@@ -9,7 +9,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import datetime
-from improved_model import ImprovedHiraganaNet
+from tqdm import tqdm
+from model.improved_model import ImprovedHiraganaNet
 
 # データセットクラス
 class HiraganaDataset(Dataset):
@@ -132,12 +133,18 @@ val_accuracies = []
 
 # 学習ループ
 num_epochs = 50  # エポック数を増やす
-for epoch in range(num_epochs):
+for epoch in tqdm(range(num_epochs),
+                  desc='Training',
+                  leave=False
+                  ):
     # 訓練モード
     model.train()
     running_loss = 0.0
     
-    for inputs, labels in train_loader:
+    for inputs, labels in tqdm(train_loader,
+                               desc=f'Training Epoch {epoch+1}/{num_epochs}',
+                               leave=False
+                               ):
         inputs, labels = inputs.to(device), labels.to(device)
         
         optimizer.zero_grad()
@@ -156,7 +163,10 @@ for epoch in range(num_epochs):
     correct = 0
     total = 0
     with torch.no_grad():
-        for inputs, labels in val_loader:
+        for inputs, labels in tqdm(val_loader,
+                                   desc=f'Validation Epoch {epoch+1}/{num_epochs}',
+                                   leave=False
+                                   ):
             inputs, labels = inputs.to(device), labels.to(device)
             outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)
